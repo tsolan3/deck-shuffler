@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Shuffle Paradox</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a2e);
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      margin-top: 2rem;
+      animation: flicker 2s infinite alternate;
+    }
+
+    @keyframes flicker {
+      from { opacity: 1; }
+      to { opacity: 0.8; text-shadow: 0 0 10px #00ffe1, 0 0 20px #00ffe1; }
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #ccc;
+    }
+
+    .section {
+      margin: 3rem auto;
+      max-width: 800px;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .section h2 {
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1rem;
+      color: #ffcc00;
+      cursor: pointer;
+    }
+
+    .collapsible {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.6s ease-out;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 3rem;
+      gap: 8px;
+    }
+
+    .card {
+      width: 45px;
+      height: 60px;
+      background-color: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: cardIn 0.5s forwards;
+    }
+
+    .card.red { color: red; }
+    .card.black { color: black; }
+
+    @keyframes cardIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #shuffleBtn, #hallOfFameBtn {
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      background: linear-gradient(145deg, #ffae00, #ffcc00);
+      color: #000;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      margin: 10px;
+    }
+
+    #shuffleBtn:hover, #hallOfFameBtn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    }
+
+    .hash-display {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .faq-item {
+      margin: 1rem 0;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .faq-question {
+      font-weight: bold;
+      cursor: pointer;
+      background: #222;
+      padding: 10px 15px;
+      border-radius: 5px;
+    }
+
+    .faq-answer {
+      padding: 10px 15px;
+      display: none;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    .footer {
+      margin-top: 5rem;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #aaa;
+      background: #0a0a0a;
+      border-top: 1px solid #222;
+    }
+  </style>
+</head>
+<body>
+  <h1>The Shuffle Paradox</h1>
+  <p class="subtitle">Every time you shuffle, you're probably making history.</p>
+
+  <div id="totalShufflesDisplay" class="subtitle"></div>
+
+  <button id="shuffleBtn">🔁 Shuffle the Deck</button>
+  <button id="hallOfFameBtn">🏆 View Hall of Fame</button>
+
+  <div id="deckOutput" class="card-container"></div>
+  <div class="hash-display" id="hashOutput"></div>
+  <div class="hash-display" id="shuffleInfo"></div>
+
+  <div id="hallOfFameOutput" style="margin-top: 3rem;"></div>
+
+  <div class="section">
+    <h2 onclick="toggleCollapse('mindContent')">Mind-Blowing Numbers ⬇</h2>
+    <div class="collapsible" id="mindContent">
+      <p>52! = 80,658,175,170,943,878,571,660,636,856...</p>
+      <p>More than the number of atoms on Earth 🌍</p>
+      <p>More than the number of seconds since the Big Bang ⏳</p>
+      <p>Your shuffle is almost certainly unique.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleCollapse('purposeContent')">Why We Built This ⬇</h2>
+    <div class="collapsible" id="purposeContent">
+      <p>To blow your mind 🌌</p>
+      <p>To visualize probability and randomness in an unforgettable way</p>
+      <p>To teach math by showing, not telling</p>
+      <p>And maybe… to help you find your shuffle twin 👯‍♂️</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFAQ(this)">Is this truly random?</div>
+      <div class="faq-answer">Yes. We use a secure shuffling method and cryptographic hashing to ensure randomness.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFAQ(this)">Can someone else get the same shuffle as me?</div>
+      <div class="faq-answer">Theoretically yes, but it’s astronomically unlikely. That’s the beauty of 52! permutations.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFAQ(this)">How do you track unique shuffles?</div>
+      <div class="faq-answer">Each shuffle is hashed using SHA-256 and compared to a database of seen hashes.</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 The Shuffle Paradox. Built with ♠️♥️♦️♣️ and curiosity.</p>
+    <p>Made by Anil Panda</p>
+  </div>
+
+  <script>
+    function getCardColor(card) {
+      return card.includes('♥') || card.includes('♦') ? 'red' : 'black';
+    }
+
+    function toggleCollapse(id) {
+      const el = document.getElementById(id);
+      el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+    }
+
+    function toggleFAQ(el) {
+      const answer = el.nextElementSibling;
+      answer.style.display = answer.style.display === "block" ? "none" : "block";
+    }
+
+    async function updateTotalShuffles() {
+      const res = await fetch("/api/hall-of-fame/");
+      const data = await res.json();
+      document.getElementById("totalShufflesDisplay").textContent = `Total Shuffles Made: ${data.total_shuffles}`;
+    }
+
+    document.getElementById("shuffleBtn").addEventListener("click", async () => {
+      const res = await fetch("/api/shuffle/");
+      const data = await res.json();
+
+      const container = document.getElementById("deckOutput");
+      container.innerHTML = '';
+      data.deck.forEach((card, i) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card ' + getCardColor(card);
+        cardEl.textContent = card;
+        cardEl.style.animationDelay = `${i * 0.015}s`;
+        container.appendChild(cardEl);
+      });
+
+      document.getElementById("hashOutput").textContent = `Shuffle Hash: ${data.hash}`;
+
+      const info = data.count === 1
+        ? `✨ This shuffle is unique! You've likely created a never-before-seen sequence.`
+        : `👯 This shuffle has been seen ${data.count} times. Last seen on ${data.last_seen} (possibly from your region).`;
+      document.getElementById("shuffleInfo").textContent = info;
+
+      updateTotalShuffles();
+    });
+
+    document.getElementById("hallOfFameBtn").addEventListener("click", async () => {
+      const res = await fetch("/api/hall-of-fame/");
+      const data = await res.json();
+
+      const output = document.getElementById("hallOfFameOutput");
+      output.innerHTML = '';
+
+      if (data.entries.length === 0) {
+        output.innerHTML = `<p>All ${data.total_shuffles} shuffles so far have been unique! ✨</p>`;
+        return;
+      }
+
+      const topTotal = data.entries.reduce((sum, entry) => sum + entry.count, 0);
+
+      output.innerHTML = `
+        <h3>Hall of Fame (Top ${data.entries.length} Shuffles)</h3>
+        <p><strong>Total Shuffles Made:</strong> ${data.total_shuffles}</p>
+        <p>Total recorded appearances of these top shuffles: <strong>${topTotal}</strong></p>
+      `;
+
+      data.entries.forEach((entry, index) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <p><strong>#${index + 1}</strong> — Seen <strong>${entry.count}</strong> times</p>
+          <p style="font-size: 0.9em;">Hash: ${entry.hash}</p>
+          <p style="font-size: 0.85em; color: #aaa;">First Seen: ${entry.first_seen}, Last Seen: ${entry.last_seen}</p>
+          <div style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; justify-content: center;">
+            ${entry.deck.map(card => `<span class="card ${getCardColor(card)}">${card}</span>`).join('')}
+          </div>
+        `;
+        output.appendChild(div);
+      });
+    });
+
+    updateTotalShuffles();
+  </script>
+</body>
+</html>
