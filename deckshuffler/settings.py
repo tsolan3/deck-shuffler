@@ -48,15 +48,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'deckshuffler.wsgi.application'
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'deckshuffler',
-        'USER': 'deckshuffler',
-        'PASSWORD': 'deckshuffler',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(conn_max_age=600)
 }
 
 AUTH_PASSWORD_VALIDATORS = []
